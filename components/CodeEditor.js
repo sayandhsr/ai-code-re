@@ -62,7 +62,7 @@ export default function CodeEditor({ code, onCodeChange, language, onLanguageCha
       {/* Toolbar */}
       <div className="editor-toolbar">
         <div className="toolbar-left">
-          <Code2 size={16} color="var(--gold)" />
+          <Code2 size={16} color="var(--accent)" />
           <span className="toolbar-title">Code Editor</span>
         </div>
         <div className="toolbar-right">
@@ -149,8 +149,8 @@ export default function CodeEditor({ code, onCodeChange, language, onLanguageCha
           min-height: 400px;
           border-radius: var(--radius-lg);
           overflow: hidden;
-          border: 1px solid var(--glass-border);
-          background: var(--dark-gray);
+          border: 1px solid var(--border);
+          background: var(--card);
         }
         .editor-toolbar {
           display: flex;
@@ -158,7 +158,7 @@ export default function CodeEditor({ code, onCodeChange, language, onLanguageCha
           justify-content: space-between;
           padding: 10px 16px;
           background: rgba(26, 26, 26, 0.8);
-          border-bottom: 1px solid var(--glass-border);
+          border-bottom: 1px solid var(--border);
         }
         .toolbar-left {
           display: flex;
@@ -184,15 +184,15 @@ export default function CodeEditor({ code, onCodeChange, language, onLanguageCha
           gap: 6px;
           padding: 5px 10px;
           border-radius: var(--radius-sm);
-          background: var(--dark-gray-2);
-          border: 1px solid var(--glass-border);
+          background: var(--card-muted);
+          border: 1px solid var(--border);
           color: var(--text-secondary);
           font-size: 12px;
           cursor: pointer;
           transition: all var(--transition-fast);
         }
         .lang-btn:hover {
-          border-color: var(--mid-gray);
+          border-color: var(--border);
           color: var(--text-primary);
         }
         .lang-menu {
@@ -202,8 +202,8 @@ export default function CodeEditor({ code, onCodeChange, language, onLanguageCha
           z-index: 50;
           margin-top: 4px;
           padding: 6px;
-          background: var(--dark-gray);
-          border: 1px solid var(--glass-border);
+          background: var(--card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-md);
           box-shadow: var(--shadow-lg);
           max-height: 200px;
@@ -222,12 +222,12 @@ export default function CodeEditor({ code, onCodeChange, language, onLanguageCha
           transition: all var(--transition-fast);
         }
         .lang-option:hover {
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           color: var(--text-primary);
         }
         .lang-option.active {
-          color: var(--gold);
-          background: var(--gold-subtle);
+          color: var(--accent);
+          background: var(--accent-soft);
         }
         .upload-btn {
           display: inline-flex;

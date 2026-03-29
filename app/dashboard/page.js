@@ -124,7 +124,7 @@ export default function DashboardPage() {
         <div className="workspace-hero hero-card">
           <div className="top-header">
             <div className="header-brand">
-              <Sparkles size={20} color="var(--gold)" />
+              <Sparkles size={20} color="var(--accent)" />
               <h1 className="header-title">Code Analysis</h1>
             </div>
             <div className="header-info">
@@ -199,7 +199,7 @@ export default function DashboardPage() {
       {/* 2. RESULTS SECTION */}
       <section className="results-section section-gap">
         <div className="section-header">
-          <ChevronRight size={20} color="var(--gold)" />
+          <ChevronRight size={20} color="var(--accent)" />
           <h2 className="section-title">Analysis Results</h2>
         </div>
         
@@ -218,7 +218,7 @@ export default function DashboardPage() {
                 className="empty-content"
               >
                 <div className="empty-orb">
-                  <Sparkles size={40} color="var(--gold)" />
+                  <Sparkles size={40} color="var(--accent)" />
                 </div>
                 <h3>Ready for Review</h3>
                 <p>Paste your code above or fetch from GitHub to start the intelligent analysis.</p>
@@ -279,7 +279,7 @@ export default function DashboardPage() {
           gap: 6px;
           font-size: 12px;
           color: var(--text-muted);
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           padding: 4px 10px;
           border-radius: 6px;
         }
@@ -288,14 +288,14 @@ export default function DashboardPage() {
           height: 440px;
           border-radius: 16px;
           overflow: hidden;
-          background: var(--black);
+          background: var(--bg);
           border: none;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
           transition: var(--transition-normal);
         }
         .editor-wrapper:focus-within {
-          border-color: var(--gold);
-          box-shadow: 0 0 0 1px var(--gold), var(--shadow-gold);
+          border-color: var(--accent);
+          box-shadow: 0 0 0 1px var(--accent), var(--shadow-gold);
         }
 
         .action-bar {
@@ -315,8 +315,8 @@ export default function DashboardPage() {
           align-items: center;
           gap: 10px;
           flex: 1;
-          background: var(--dark-gray-2);
-          border: 1px solid var(--glass-border);
+          background: var(--card-muted);
+          border: 1px solid var(--border);
           padding: 10px 16px;
           border-radius: var(--radius-md);
         }
@@ -362,7 +362,7 @@ export default function DashboardPage() {
           align-items: center;
           justify-content: center;
           border-radius: var(--radius-xl);
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
         }
         .empty-content {
           text-align: center;
@@ -395,11 +395,11 @@ export default function DashboardPage() {
           margin-top: 24px;
         }
         .feature-grid span {
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           padding: 6px 14px;
           border-radius: 100px;
           font-size: 12px;
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
         }
 
         @media (max-width: 768px) {

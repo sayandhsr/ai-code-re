@@ -85,7 +85,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
           {/* Header */}
           <div className="chat-header">
             <div className="chat-header-left">
-              <Bot size={18} color="var(--gold)" />
+              <Bot size={18} color="var(--accent)" />
               <span>AI Assistant</span>
             </div>
             <button className="btn-icon" onClick={onClose}>
@@ -97,7 +97,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
           <div className="chat-messages">
             {messages.length === 0 && (
               <div className="chat-welcome">
-                <Sparkles size={32} color="var(--gold)" />
+                <Sparkles size={32} color="var(--accent)" />
                 <h3>Ask about your code</h3>
                 <p>Get explanations, suggestions, or ask any coding question</p>
                 <div className="chat-suggestions">
@@ -125,7 +125,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
                   {msg.role === "user" ? (
                     <User size={14} />
                   ) : (
-                    <Bot size={14} color="var(--gold)" />
+                    <Bot size={14} color="var(--accent)" />
                   )}
                 </div>
                 <div className="msg-content">
@@ -143,7 +143,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
             {isLoading && (
               <div className="chat-message assistant">
                 <div className="msg-avatar">
-                  <Bot size={14} color="var(--gold)" />
+                  <Bot size={14} color="var(--accent)" />
                 </div>
                 <div className="msg-content">
                   <div className="typing-indicator">
@@ -182,8 +182,8 @@ export default function ChatPanel({ code, isOpen, onClose }) {
               flex-direction: column;
               height: 100%;
               border-radius: var(--radius-xl);
-              border: 1px solid var(--glass-border);
-              background: var(--dark-gray);
+              border: 1px solid var(--border);
+              background: var(--card);
               overflow: hidden;
               box-shadow: var(--shadow-sm);
             }
@@ -192,8 +192,8 @@ export default function ChatPanel({ code, isOpen, onClose }) {
               align-items: center;
               justify-content: space-between;
               padding: 12px 16px;
-              border-bottom: 1px solid var(--glass-border);
-              background: var(--dark-gray-2);
+              border-bottom: 1px solid var(--border);
+              background: var(--card-muted);
             }
             .chat-header-left {
               display: flex;
@@ -235,17 +235,17 @@ export default function ChatPanel({ code, isOpen, onClose }) {
             .suggestion-btn {
               padding: 6px 14px;
               border-radius: 100px;
-              background: var(--gold-subtle);
-              color: var(--gold);
+              background: var(--accent-soft);
+              color: var(--accent);
               font-size: 12px;
               font-weight: 500;
               cursor: pointer;
               transition: all var(--transition-fast);
-              border: 1px solid rgba(212, 175, 55, 0.2);
+              border: 1px solid var(--accent-soft);
             }
             .suggestion-btn:hover {
               background: rgba(212, 175, 55, 0.15);
-              border-color: var(--gold);
+              border-color: var(--accent);
             }
             .chat-message {
               display: flex;
@@ -260,11 +260,11 @@ export default function ChatPanel({ code, isOpen, onClose }) {
               display: flex;
               align-items: center;
               justify-content: center;
-              background: var(--dark-gray-2);
+              background: var(--card-muted);
               color: var(--text-secondary);
             }
             .chat-message.assistant .msg-avatar {
-              background: var(--gold-subtle);
+              background: var(--accent-soft);
             }
             .msg-content {
               flex: 1;
@@ -279,7 +279,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
             .msg-content pre {
               padding: 12px;
               border-radius: var(--radius-sm);
-              background: var(--black-light);
+              background: var(--bg-secondary);
               overflow-x: auto;
               margin: 8px 0;
               font-size: 13px;
@@ -287,7 +287,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
             .msg-content code {
               padding: 2px 6px;
               border-radius: 4px;
-              background: var(--dark-gray-2);
+              background: var(--card-muted);
               font-size: 13px;
             }
             .msg-content pre code {
@@ -303,7 +303,7 @@ export default function ChatPanel({ code, isOpen, onClose }) {
               width: 6px;
               height: 6px;
               border-radius: 50%;
-              background: var(--gold);
+              background: var(--accent);
               animation: pulse 1.4s ease-in-out infinite;
             }
             .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
@@ -313,15 +313,15 @@ export default function ChatPanel({ code, isOpen, onClose }) {
               align-items: flex-end;
               gap: 8px;
               padding: 12px 16px;
-              border-top: 1px solid var(--glass-border);
-              background: var(--dark-gray-2);
+              border-top: 1px solid var(--border);
+              background: var(--card-muted);
             }
             .chat-input {
               flex: 1;
               padding: 10px 14px;
               border-radius: var(--radius-md);
-              background: var(--dark-gray-2);
-              border: 1px solid var(--glass-border);
+              background: var(--card-muted);
+              border: 1px solid var(--border);
               color: var(--text-primary);
               font-size: 14px;
               resize: none;
@@ -339,8 +339,8 @@ export default function ChatPanel({ code, isOpen, onClose }) {
               width: 40px;
               height: 40px;
               border-radius: var(--radius-md);
-              background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-              color: var(--black);
+              background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+              color: var(--bg);
               display: flex;
               align-items: center;
               justify-content: center;

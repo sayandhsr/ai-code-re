@@ -24,7 +24,7 @@ export default function SettingsPage() {
       <div className="settings-stack">
         {/* Profile Section */}
         <motion.section 
-          className="settings-card hero-card"
+          className="section-card"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -51,7 +51,7 @@ export default function SettingsPage() {
 
         {/* Appearance Section */}
         <motion.section 
-          className="settings-card hero-card"
+          className="section-card"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -78,7 +78,7 @@ export default function SettingsPage() {
 
         {/* Preferences Section */}
         <motion.section 
-          className="settings-card hero-card"
+          className="section-card"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -137,7 +137,7 @@ export default function SettingsPage() {
 
         {/* About Section */}
         <motion.section 
-          className="settings-card hero-card"
+          className="section-card"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -196,8 +196,10 @@ export default function SettingsPage() {
           gap: 24px;
         }
 
-        .settings-card {
+        .section-card {
           padding: 24px;
+          background: var(--card);
+          border-radius: var(--radius-lg);
         }
 
         .card-header {
@@ -227,7 +229,7 @@ export default function SettingsPage() {
           width: 72px;
           height: 72px;
           border-radius: 50%;
-          border: 3px solid var(--gold-subtle);
+          border: 3px solid var(--accent-soft);
           object-fit: cover;
         }
         .avatar-badge {
@@ -238,7 +240,7 @@ export default function SettingsPage() {
           height: 14px;
           border-radius: 50%;
           background: #10B981;
-          border: 2px solid var(--dark-gray);
+          border: 2px solid var(--card);
         }
         .user-details {
           display: flex;
@@ -257,13 +259,13 @@ export default function SettingsPage() {
         .user-badge {
           font-size: 11px;
           font-weight: 700;
-          color: var(--gold);
-          background: var(--gold-subtle);
+          color: var(--accent);
+          background: var(--accent-soft);
           padding: 2px 8px;
           border-radius: 4px;
           width: fit-content;
           margin-top: 4px;
-          border: 1px solid rgba(212, 175, 55, 0.2);
+          border: 1px solid var(--accent-soft);
         }
 
         /* Setting Items */
@@ -304,7 +306,7 @@ export default function SettingsPage() {
           transition: all var(--transition-normal);
         }
         .theme-toggle-pill:hover {
-          border-color: var(--gold-soft);
+          border-color: var(--accent-soft);
         }
         .pill-track {
           width: 48px;
@@ -314,7 +316,7 @@ export default function SettingsPage() {
           position: relative;
           transition: 300ms;
         }
-        .pill-track.dark { background: var(--gold-subtle); }
+        .pill-track.dark { background: var(--accent-soft); }
         .pill-thumb {
           position: absolute;
           top: 3px;
@@ -322,11 +324,11 @@ export default function SettingsPage() {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: var(--gold);
+          background: var(--accent);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--black);
+          color: var(--bg);
           transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
         }
         .pill-track.light .pill-thumb { transform: translateX(22px); }
@@ -348,7 +350,7 @@ export default function SettingsPage() {
         }
         
         .setting-select:focus {
-          border-color: var(--gold);
+          border-color: var(--accent);
           box-shadow: 0 0 0 2px rgba(184,150,46,0.15);
           outline: none;
         }
@@ -368,7 +370,7 @@ export default function SettingsPage() {
           background: var(--border);
           font-size: 18px;
         }
-        .font-control button:hover { background: var(--glass-hover); }
+        .font-control button:hover { background: var(--card-muted); }
         .font-control span {
           padding: 0 16px;
           font-size: 14px;
@@ -387,7 +389,7 @@ export default function SettingsPage() {
           position: absolute;
           cursor: pointer;
           top: 0; left: 0; right: 0; bottom: 0;
-          background-color: var(--dark-gray-3);
+          background-color: var(--border);
           transition: .4s;
           border-radius: 34px;
         }
@@ -400,10 +402,10 @@ export default function SettingsPage() {
           transition: .4s;
           border-radius: 50%;
         }
-        input:checked + .toggle-slider { background-color: var(--gold-subtle); }
+        input:checked + .toggle-slider { background-color: var(--accent-soft); }
         input:checked + .toggle-slider:before {
           transform: translateX(20px);
-          background-color: var(--gold);
+          background-color: var(--accent);
         }
 
         /* About Grid */
@@ -430,7 +432,7 @@ export default function SettingsPage() {
         }
 
         .icon-gold {
-          color: var(--gold);
+          color: var(--accent);
         }
       `}</style>
     </div>

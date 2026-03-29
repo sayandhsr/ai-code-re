@@ -19,12 +19,12 @@ function FileTreeItem({ file, selected, onToggle, depth = 0 }) {
       style={{ paddingLeft: 16 + depth * 16 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      whileHover={{ backgroundColor: "var(--dark-gray-2)" }}
+      whileHover={{ backgroundColor: "var(--card-muted)" }}
       onClick={() => onToggle(file.path)}
     >
       <div className="tree-check">
         {isSelected ? (
-          <Check size={14} color="var(--gold)" />
+          <Check size={14} color="var(--accent)" />
         ) : (
           <Square size={14} color="var(--text-muted)" />
         )}
@@ -106,7 +106,7 @@ export default function GitHubPage() {
     <div className="github-page">
       <div className="page-header">
         <h1 className="page-title">
-          <GitBranch size={22} color="var(--gold)" />
+          <GitBranch size={22} color="var(--accent)" />
           GitHub Analyzer
         </h1>
         <p className="page-subtitle">Analyze code from any public GitHub repository</p>
@@ -140,7 +140,7 @@ export default function GitHubPage() {
           <div className="file-tree-panel">
             <div className="tree-header">
               <div className="tree-info">
-                <FolderOpen size={16} color="var(--gold)" />
+                <FolderOpen size={16} color="var(--accent)" />
                 <span>{repoInfo?.owner}/{repoInfo?.repo}</span>
               </div>
               <div className="tree-actions">
@@ -169,7 +169,7 @@ export default function GitHubPage() {
             {activeFile ? (
               <>
                 <div className="preview-header">
-                  <Code2 size={16} color="var(--gold)" />
+                  <Code2 size={16} color="var(--accent)" />
                   <span>{activeFile}</span>
                 </div>
                 <pre className="preview-code"><code>{fileContent}</code></pre>
@@ -209,8 +209,8 @@ export default function GitHubPage() {
           align-items: center;
           gap: 12px;
           padding: 12px 18px;
-          background: var(--dark-gray);
-          border: 1px solid var(--glass-border);
+          background: var(--card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-lg);
         }
         .url-input {
@@ -230,8 +230,8 @@ export default function GitHubPage() {
           display: flex;
           flex-direction: column;
           border-radius: var(--radius-lg);
-          border: 1px solid var(--glass-border);
-          background: var(--dark-gray);
+          border: 1px solid var(--border);
+          background: var(--card);
           overflow: hidden;
         }
         .tree-header {
@@ -239,7 +239,7 @@ export default function GitHubPage() {
           align-items: center;
           justify-content: space-between;
           padding: 12px 16px;
-          border-bottom: 1px solid var(--glass-border);
+          border-bottom: 1px solid var(--border);
         }
         .tree-info {
           display: flex;
@@ -253,7 +253,7 @@ export default function GitHubPage() {
           padding: 6px 16px;
           font-size: 12px;
           color: var(--text-muted);
-          border-bottom: 1px solid var(--glass-border);
+          border-bottom: 1px solid var(--border);
         }
         .tree-list {
           flex: 1;
@@ -270,8 +270,8 @@ export default function GitHubPage() {
           color: var(--text-secondary);
         }
         .tree-item.selected {
-          background: var(--gold-subtle);
-          color: var(--gold);
+          background: var(--accent-soft);
+          color: var(--accent);
         }
         .tree-check { flex-shrink: 0; }
         .tree-name { color: var(--text-primary); }
@@ -283,8 +283,8 @@ export default function GitHubPage() {
           display: flex;
           flex-direction: column;
           border-radius: var(--radius-lg);
-          border: 1px solid var(--glass-border);
-          background: var(--dark-gray);
+          border: 1px solid var(--border);
+          background: var(--card);
           overflow: hidden;
         }
         .preview-header {
@@ -292,7 +292,7 @@ export default function GitHubPage() {
           align-items: center;
           gap: 8px;
           padding: 12px 16px;
-          border-bottom: 1px solid var(--glass-border);
+          border-bottom: 1px solid var(--border);
           font-size: 13px;
           font-weight: 500;
           color: var(--text-primary);

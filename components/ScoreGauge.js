@@ -56,7 +56,7 @@ export default function ScoreGauge({ score = 0 }) {
           cy="70"
           r={radius}
           fill="none"
-          stroke="var(--dark-gray-2)"
+          stroke="var(--card-muted)"
           strokeWidth="10"
         />
         {/* Score arc */}

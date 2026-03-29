@@ -131,12 +131,12 @@ export default function Sidebar({ collapsed, onToggle }) {
           cursor: pointer;
         }
         .sidebar-item:hover {
-          background: var(--glass-hover);
+          background: var(--card-muted);
           color: var(--text-primary);
         }
         .sidebar-item.active {
-          color: var(--gold);
-          background: var(--gold-soft);
+          color: var(--accent);
+          background: var(--accent-soft);
         }
         .sidebar-icon {
           flex-shrink: 0;
@@ -157,7 +157,7 @@ export default function Sidebar({ collapsed, onToggle }) {
           bottom: 8px;
           width: 4px;
           border-radius: 0 4px 4px 0;
-          background: var(--gold);
+          background: var(--accent);
           box-shadow: 2px 0 10px var(--gold-glow);
         }
         .sidebar-bottom {
@@ -172,10 +172,10 @@ export default function Sidebar({ collapsed, onToggle }) {
           gap: 10px;
           padding: 12px;
           border-radius: var(--radius-md);
-          background: var(--gold-subtle);
+          background: var(--accent-soft);
           font-size: 11px;
           font-weight: 600;
-          color: var(--gold);
+          color: var(--accent);
           width: 100%;
           border: 1px solid rgba(212, 175, 55, 0.1);
         }

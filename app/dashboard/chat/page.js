@@ -65,7 +65,7 @@ export default function ChatPage() {
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <Sparkles size={48} color="var(--gold)" />
+              <Sparkles size={48} color="var(--accent)" />
             </motion.div>
             <h2>AI Chat Assistant</h2>
             <p>Ask anything about code, architecture, or best practices</p>
@@ -91,7 +91,7 @@ export default function ChatPage() {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <div className="msg-icon">
-                  {msg.role === "user" ? <User size={16} /> : <Bot size={16} color="var(--gold)" />}
+                  {msg.role === "user" ? <User size={16} /> : <Bot size={16} color="var(--accent)" />}
                 </div>
                 <div className="msg-body">
                   <span className="msg-role">
@@ -109,7 +109,7 @@ export default function ChatPage() {
             ))}
             {isLoading && (
               <div className="message assistant">
-                <div className="msg-icon"><Bot size={16} color="var(--gold)" /></div>
+                <div className="msg-icon"><Bot size={16} color="var(--accent)" /></div>
                 <div className="msg-body">
                   <span className="msg-role">AI Assistant</span>
                   <div className="typing"><span /><span /><span /></div>
@@ -184,8 +184,8 @@ export default function ChatPage() {
         .suggestion-chip {
           padding: 10px 16px;
           border-radius: var(--radius-md);
-          background: var(--dark-gray);
-          border: 1px solid var(--glass-border);
+          background: var(--card);
+          border: 1px solid var(--border);
           color: var(--text-secondary);
           font-size: 13px;
           text-align: left;
@@ -193,9 +193,9 @@ export default function ChatPage() {
           transition: all var(--transition-fast);
         }
         .suggestion-chip:hover {
-          border-color: rgba(212, 175, 55, 0.3);
-          background: var(--gold-subtle);
-          color: var(--gold);
+          border-color: var(--accent-soft);
+          background: var(--accent-soft);
+          color: var(--accent);
         }
         .messages {
           display: flex;
@@ -214,11 +214,11 @@ export default function ChatPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           color: var(--text-secondary);
         }
         .message.assistant .msg-icon {
-          background: var(--gold-subtle);
+          background: var(--accent-soft);
         }
         .msg-body {
           flex: 1;
@@ -239,7 +239,7 @@ export default function ChatPage() {
         .msg-text pre {
           padding: 12px;
           border-radius: var(--radius-sm);
-          background: var(--dark-gray);
+          background: var(--card);
           overflow-x: auto;
           margin: 8px 0;
           font-size: 13px;
@@ -247,7 +247,7 @@ export default function ChatPage() {
         .msg-text code {
           padding: 2px 6px;
           border-radius: 4px;
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           font-size: 13px;
         }
         .msg-text pre code { padding: 0; background: none; }
@@ -260,7 +260,7 @@ export default function ChatPage() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: var(--gold);
+          background: var(--accent);
           animation: pulse 1.4s ease-in-out infinite;
         }
         .typing span:nth-child(2) { animation-delay: 0.2s; }
@@ -270,14 +270,14 @@ export default function ChatPage() {
           align-items: flex-end;
           gap: 10px;
           padding: 16px 0 4px;
-          border-top: 1px solid var(--glass-border);
+          border-top: 1px solid var(--border);
         }
         .input-bar textarea {
           flex: 1;
           padding: 12px 16px;
           border-radius: var(--radius-lg);
-          background: var(--dark-gray);
-          border: 1px solid var(--glass-border);
+          background: var(--card);
+          border: 1px solid var(--border);
           color: var(--text-primary);
           font-size: 14px;
           resize: none;
@@ -295,8 +295,8 @@ export default function ChatPage() {
           width: 44px;
           height: 44px;
           border-radius: var(--radius-md);
-          background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-          color: var(--black);
+          background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+          color: var(--bg);
           display: flex;
           align-items: center;
           justify-content: center;

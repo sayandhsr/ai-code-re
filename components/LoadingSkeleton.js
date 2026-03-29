@@ -40,12 +40,12 @@ export default function LoadingSkeleton() {
         .loading-skeleton {
           border-radius: var(--radius-lg);
           overflow: hidden;
-          border: 1px solid var(--glass-border);
-          background: var(--dark-gray);
+          border: 1px solid var(--border);
+          background: var(--card);
         }
         .skel-header {
           padding: 12px 16px;
-          border-bottom: 1px solid var(--glass-border);
+          border-bottom: 1px solid var(--border);
         }
         .skel-tabs {
           display: flex;
@@ -80,8 +80,8 @@ export default function LoadingSkeleton() {
         .skel-card {
           padding: 16px;
           border-radius: var(--radius-md);
-          border: 1px solid var(--glass-border);
-          background: var(--black-light);
+          border: 1px solid var(--border);
+          background: var(--bg-secondary);
         }
       `}</style>
     </div>

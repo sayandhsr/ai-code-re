@@ -28,7 +28,7 @@ export default function Navbar({ onToggleSidebar }) {
         </button>
         <div className="navbar-brand">
           <div className="navbar-logo">
-            <Code2 size={20} color={theme === "dark" ? "#1A1A1A" : "#FFFFFF"} strokeWidth={2.5} />
+            <img src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"} alt="Logo" width="20" height="20" />
           </div>
           <span className="navbar-title">CodeReview AI</span>
         </div>
@@ -81,7 +81,7 @@ export default function Navbar({ onToggleSidebar }) {
           align-items: center;
           justify-content: space-between;
           padding: 0;
-          background: transparent;
+          background: var(--bg);
           border-bottom: 1px solid var(--border);
           margin-bottom: 16px;
         }
@@ -99,11 +99,11 @@ export default function Navbar({ onToggleSidebar }) {
           width: 38px;
           height: 38px;
           border-radius: 12px;
-          background: linear-gradient(135deg, var(--gold), var(--gold-light));
+          background: linear-gradient(135deg, var(--accent), var(--accent-hover));
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+          box-shadow: 0 4px 15px var(--accent-soft);
         }
         .navbar-title {
           font-size: 18px;
@@ -159,20 +159,20 @@ export default function Navbar({ onToggleSidebar }) {
           gap: 12px;
           margin-left: 12px;
           padding-left: 16px;
-          border-left: 1px solid var(--glass-border);
+          border-left: 1px solid var(--border);
         }
         .navbar-avatar {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          border: 2px solid var(--gold-subtle);
+          border: 2px solid var(--accent-soft);
         }
         .sidebar-toggle {
           display: flex;
           color: var(--text-muted);
         }
         .sidebar-toggle:hover {
-          color: var(--gold);
+          color: var(--accent);
         }
         @media (max-width: 768px) {
           .navbar-center { display: none; }

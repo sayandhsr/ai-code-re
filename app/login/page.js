@@ -113,7 +113,7 @@ export default function LoginPage() {
             onClick={handleSignIn}
             disabled={isSigningIn}
             style={styles.signInBtn}
-            whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(212, 175, 55, 0.3)" }}
+            whileHover={{ scale: 1.02, boxShadow: "0 8px 30px var(--accent-soft)" }}
             whileTap={{ scale: 0.98 }}
           >
             {isSigningIn ? (
@@ -227,7 +227,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0 4px 20px rgba(212, 175, 55, 0.3)",
+    boxShadow: "0 4px 20px var(--accent-soft)",
   },
   logoText: {
     fontSize: "22px",
@@ -302,7 +302,7 @@ const styles = {
     width: "100%",
     padding: "14px 24px",
     borderRadius: "14px",
-    background: "linear-gradient(135deg, #D4AF37, #B8962E)",
+    background: "linear-gradient(135deg, #D4AF37, var(--accent))",
     color: "#0D0D0D",
     fontSize: "15px",
     fontWeight: "600",

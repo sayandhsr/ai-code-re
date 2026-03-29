@@ -30,8 +30,8 @@ export default function DashboardLayout({ children }) {
 
   if (loading) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--black)" }}>
-        <div style={{ width: 32, height: 32, border: "3px solid var(--dark-gray)", borderTopColor: "var(--gold)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)" }}>
+        <div style={{ width: 32, height: 32, border: "3px solid var(--card)", borderTopColor: "var(--accent)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function DashboardLayout({ children }) {
       <style jsx>{`
         .dashboard-layout {
           min-height: 100vh;
-          background: var(--black);
+          background: var(--bg);
           position: relative;
         }
         .dashboard-main {

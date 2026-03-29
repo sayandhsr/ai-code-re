@@ -53,7 +53,7 @@ export default function HistoryPage() {
       <div className="history-header">
         <div>
           <h1 className="page-title">
-            <History size={22} color="var(--gold)" />
+            <History size={22} color="var(--accent)" />
             Analysis History
           </h1>
           <p className="page-subtitle">
@@ -64,7 +64,7 @@ export default function HistoryPage() {
 
       {loading ? (
         <div className="empty-state-full">
-          <Loader2 size={48} className="spin-icon" color="var(--gold)" />
+          <Loader2 size={48} className="spin-icon" color="var(--accent)" />
           <h3>Synchronizing with Cloud...</h3>
         </div>
       ) : history.length === 0 ? (
@@ -248,11 +248,11 @@ export default function HistoryPage() {
           transition: all var(--transition-fast);
         }
         .history-item:hover {
-          border-color: var(--gold-soft);
+          border-color: var(--accent-soft);
         }
         .history-item.active {
-          border-color: var(--gold);
-          background: var(--gold-soft);
+          border-color: var(--accent);
+          background: var(--accent-soft);
         }
         .item-top {
           display: flex;
@@ -298,7 +298,7 @@ export default function HistoryPage() {
           height: 100%;
           gap: 8px;
           border-radius: var(--radius-lg);
-          border: 1px dashed var(--glass-border);
+          border: 1px dashed var(--border);
         }
         .detail-empty p {
           font-size: 14px;

@@ -66,7 +66,7 @@ function OverviewTab({ results }) {
   return (
     <div className="overview-tab">
       <div className="overview-grid">
-        <div className="overview-score-card glass-card">
+        <div className="overview-score-card analysis-card">
           <ScoreGauge score={results.score} />
           <div className="score-meta">
             <span className="complexity-label">Complexity</span>
@@ -79,28 +79,28 @@ function OverviewTab({ results }) {
         </div>
 
         <div className="overview-stats">
-          <div className="stat-card glass-card" style={{ borderLeft: "3px solid var(--red)" }}>
+          <div className="stat-card analysis-card" style={{ borderLeft: "3px solid var(--red)" }}>
             <XCircle size={20} color="var(--red)" />
             <div>
               <div className="stat-number">{results.bugs?.length || 0}</div>
               <div className="stat-label">Bugs Found</div>
             </div>
           </div>
-          <div className="stat-card glass-card" style={{ borderLeft: "3px solid var(--yellow)" }}>
+          <div className="stat-card analysis-card" style={{ borderLeft: "3px solid var(--yellow)" }}>
             <AlertTriangle size={20} color="var(--yellow)" />
             <div>
               <div className="stat-number">{results.suggestions?.length || 0}</div>
               <div className="stat-label">Suggestions</div>
             </div>
           </div>
-          <div className="stat-card glass-card" style={{ borderLeft: "3px solid var(--purple)" }}>
+          <div className="stat-card analysis-card" style={{ borderLeft: "3px solid var(--purple)" }}>
             <Shield size={20} color="var(--purple)" />
             <div>
               <div className="stat-number">{results.security?.length || 0}</div>
               <div className="stat-label">Security Issues</div>
             </div>
           </div>
-          <div className="stat-card glass-card" style={{ borderLeft: "3px solid var(--green)" }}>
+          <div className="stat-card analysis-card" style={{ borderLeft: "3px solid var(--green)" }}>
             <CheckCircle2 size={20} color="var(--green)" />
             <div>
               <div className="stat-number">{results.score >= 70 ? "Pass" : "Fail"}</div>
@@ -263,8 +263,8 @@ export default function ResultsTabs({ results }) {
           display: flex;
           gap: 4px;
           padding: 8px 16px;
-          background: var(--dark-gray-2);
-          border: 1px solid var(--glass-border);
+          background: var(--card-muted);
+          border: 1px solid var(--border);
           border-radius: var(--radius-md);
           overflow-x: auto;
           scrollbar-width: none;
@@ -286,10 +286,10 @@ export default function ResultsTabs({ results }) {
         }
         .tab-btn:hover {
           color: var(--text-primary);
-          background: var(--glass-hover);
+          background: var(--card-muted);
         }
         .tab-btn.active {
-          color: var(--gold);
+          color: var(--accent);
           background: rgba(212, 175, 55, 0.05);
         }
         .tab-indicator {
@@ -298,7 +298,7 @@ export default function ResultsTabs({ results }) {
           left: 0;
           right: 0;
           height: 2px;
-          background: var(--gold);
+          background: var(--accent);
           box-shadow: 0 -2px 10px var(--gold-glow);
         }
         .tab-content {
@@ -368,9 +368,15 @@ export default function ResultsTabs({ results }) {
         }
 
         /* Cards */
+        .analysis-card {
+          background: var(--card-muted);
+          border-radius: var(--radius-lg);
+          border: 1px solid var(--border);
+        }
+
         .result-card {
           border-radius: var(--radius-md);
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
           overflow: hidden;
           margin-bottom: 12px;
         }
@@ -391,7 +397,7 @@ export default function ResultsTabs({ results }) {
           transition: background var(--transition-fast);
         }
         .card-header:hover {
-          background: var(--glass-hover);
+          background: var(--card-muted);
         }
         .card-header-left {
           display: flex;
@@ -414,8 +420,8 @@ export default function ResultsTabs({ results }) {
           gap: 12px;
           padding: 14px 16px;
           border-radius: var(--radius-md);
-          border: 1px solid var(--glass-border);
-          background: var(--black-light);
+          border: 1px solid var(--border);
+          background: var(--bg-secondary);
         }
         .list-item.red {
           border-left: 3px solid var(--red);
@@ -455,7 +461,7 @@ export default function ResultsTabs({ results }) {
         /* Code Tab */
         .code-tab {
           border-radius: var(--radius-md);
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
           overflow: hidden;
         }
         .code-tab-header {
@@ -463,7 +469,7 @@ export default function ResultsTabs({ results }) {
           align-items: center;
           justify-content: space-between;
           padding: 10px 16px;
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           font-size: 13px;
           color: var(--text-secondary);
           font-weight: 500;
@@ -474,7 +480,7 @@ export default function ResultsTabs({ results }) {
           font-size: 13px;
           line-height: 1.6;
           color: var(--text-primary);
-          background: var(--black-light);
+          background: var(--bg-secondary);
           white-space: pre-wrap;
           word-break: break-word;
         }
@@ -528,7 +534,7 @@ export default function ResultsTabs({ results }) {
           transition: all var(--transition-fast);
         }
         .copy-btn:hover {
-          background: var(--dark-gray-2);
+          background: var(--card-muted);
           color: var(--text-primary);
         }
       `}</style>

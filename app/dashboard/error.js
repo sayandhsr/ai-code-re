@@ -16,15 +16,15 @@ export default function ErrorBoundary({ error, reset }) {
       alignItems: "center",
       justifyContent: "center",
       gap: "24px",
-      background: "var(--black)",
+      background: "var(--bg)",
       color: "var(--text-primary)",
       padding: "24px"
     }}>
       <div style={{
         padding: "24px",
         borderRadius: "var(--radius-xl)",
-        background: "var(--dark-gray-2)",
-        border: "1px solid var(--glass-border)",
+        background: "var(--card-muted)",
+        border: "1px solid var(--border)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -40,8 +40,8 @@ export default function ErrorBoundary({ error, reset }) {
           onClick={() => reset()}
           style={{
             padding: "10px 20px",
-            background: "var(--dark-gray)",
-            border: "1px solid var(--glass-border)",
+            background: "var(--card)",
+            border: "1px solid var(--border)",
             borderRadius: "var(--radius-sm)",
             color: "var(--text-primary)",
             display: "flex",
@@ -52,12 +52,12 @@ export default function ErrorBoundary({ error, reset }) {
             transition: "all 0.2s"
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.background = "var(--dark-gray-3)";
+            e.currentTarget.style.background = "var(--border)";
             e.currentTarget.style.borderColor = "var(--text-muted)";
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.background = "var(--dark-gray)";
-            e.currentTarget.style.borderColor = "var(--glass-border)";
+            e.currentTarget.style.background = "var(--card)";
+            e.currentTarget.style.borderColor = "var(--border)";
           }}
         >
           <RefreshCw size={16} />
