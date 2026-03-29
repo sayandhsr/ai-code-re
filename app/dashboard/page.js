@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Play, MessageSquare, Download, FileDown, GitBranch,
-  Loader2, Sparkles, Keyboard, ChevronRight,
+  Loader2, Sparkles, Keyboard, ChevronRight, AlertTriangle,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
   const [results, setResults] = useState(null);
+  const [error, setError] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [githubUrl, setGithubUrl] = useState("");
 
@@ -43,26 +44,48 @@ export default function DashboardPage() {
     }
     setIsAnalyzing(true);
     setResults(null);
+    setError(null);
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
+
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, language }),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
 
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        throw new Error("Invalid format received from AI. Please try again.");
+      }
 
+      if (!res.ok) {
+        throw new Error(data.error || `Server error: ${res.status}`);
+      }
+      
       if (data.error) {
-        toast.error(data.error);
-        return;
+        throw new Error(data.error);
       }
 
       setResults(data);
-      await saveAnalysis({ code, language, result: data }, user);
+      if (user) {
+        await saveAnalysis({ code, language, result: data }, user);
+      }
       toast.success("Analysis complete!");
     } catch (err) {
-      toast.error("Analysis failed. Please try again.");
+      console.error("Analysis Exception:", err);
+      const errMsg = err.name === "AbortError" 
+        ? "Analysis timed out. The request took too long." 
+        : err.message || "Analysis failed due to a network error.";
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setIsAnalyzing(false);
     }
@@ -207,6 +230,16 @@ export default function DashboardPage() {
           {isAnalyzing ? (
             <div className="loading-container">
               <LoadingSkeleton />
+            </div>
+          ) : error ? (
+            <div className="empty-state glass" style={{ borderColor: 'var(--red)', background: 'var(--red-bg, rgba(239, 68, 68, 0.05))' }}>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="empty-content">
+                <div className="empty-orb" style={{ background: 'var(--red-bg, rgba(239, 68, 68, 0.1))' }}>
+                  <AlertTriangle size={40} color="var(--red)" />
+                </div>
+                <h3 style={{ color: 'var(--red)' }}>Analysis Failed</h3>
+                <p>{error}</p>
+              </motion.div>
             </div>
           ) : results ? (
             <ResultsTabs results={results} />

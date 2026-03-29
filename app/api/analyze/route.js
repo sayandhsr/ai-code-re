@@ -43,6 +43,9 @@ export async function POST(request) {
 
     const userMessage = `Analyze the following ${language || "code"} code:\n\n\`\`\`${language || ""}\n${code}\n\`\`\``;
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 50000);
+
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -59,7 +62,10 @@ export async function POST(request) {
         max_tokens: 4096,
         response_format: { type: "json_object" },
       }),
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorData = await response.text();
@@ -119,8 +125,14 @@ export async function POST(request) {
     return NextResponse.json(normalized);
   } catch (error) {
     console.error("Analysis error:", error);
+    if (error.name === 'AbortError') {
+      return NextResponse.json(
+        { error: "AI service timed out. The file might be too large or the service is congested." },
+        { status: 504 }
+      );
+    }
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: error.message || "Internal server error" },
       { status: 500 }
     );
   }
