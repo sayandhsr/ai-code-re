@@ -100,11 +100,11 @@ export default function Sidebar({ collapsed, onToggle }) {
           left: 0;
           top: 0;
           bottom: 0;
-          z-index: 1000; /* High z-index above everything */
-          background: rgba(13, 13, 13, 0.98);
-          border-right: 1px solid var(--glass-border);
+          z-index: 1000;
+          background: var(--card);
+          border-right: 1px solid var(--border);
           overflow: hidden;
-          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
         }
         .sidebar-inner {
           display: flex;
@@ -131,12 +131,12 @@ export default function Sidebar({ collapsed, onToggle }) {
           cursor: pointer;
         }
         .sidebar-item:hover {
-          background: var(--dark-gray-3);
+          background: var(--glass-hover);
           color: var(--text-primary);
         }
         .sidebar-item.active {
           color: var(--gold);
-          background: var(--gold-subtle);
+          background: var(--gold-soft);
         }
         .sidebar-icon {
           flex-shrink: 0;

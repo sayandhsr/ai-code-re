@@ -10,12 +10,14 @@ import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import ResultsTabs from "@/components/ResultsTabs";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
+import { useAuth } from "@/contexts/AuthContext";
 import { saveAnalysis } from "@/lib/history";
 import { exportAsPdf, exportAsMarkdown } from "@/lib/export";
 
 const CodeEditor = dynamic(() => import("@/components/CodeEditor"), { ssr: false });
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
   const [results, setResults] = useState(null);
@@ -57,7 +59,7 @@ export default function DashboardPage() {
       }
 
       setResults(data);
-      saveAnalysis({ code, language, results: data });
+      await saveAnalysis({ code, language, result: data }, user);
       toast.success("Analysis complete!");
     } catch (err) {
       toast.error("Analysis failed. Please try again.");

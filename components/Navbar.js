@@ -82,8 +82,8 @@ export default function Navbar({ onToggleSidebar }) {
           justify-content: space-between;
           padding: 0;
           background: transparent;
-          border-bottom: 1px solid var(--glass-border);
-          margin-bottom: 16px; /* Strictly ONLY source of spacing below navbar */
+          border-bottom: 1px solid var(--border);
+          margin-bottom: 16px;
         }
         .navbar-left {
           display: flex;
@@ -121,29 +121,32 @@ export default function Navbar({ onToggleSidebar }) {
           align-items: center;
           gap: 12px;
           padding: 10px 16px;
-          background: var(--dark-gray-2);
-          border: 1px solid var(--glass-border);
+          background: var(--bg);
+          border: 1px solid var(--border);
           border-radius: var(--radius-md);
           color: var(--text-muted);
           transition: all var(--transition-normal);
           cursor: pointer;
         }
         .navbar-search:hover {
-          background: var(--dark-gray-3);
-          border-color: var(--mid-gray);
+          background: var(--border);
+          border-color: var(--text-muted);
         }
         .navbar-search input {
           flex: 1;
           font-size: 14px;
-          color: var(--text-muted);
+          color: var(--text-primary);
+          background: transparent;
+          border: none;
+          outline: none;
         }
         .navbar-search kbd {
           padding: 3px 8px;
           border-radius: 6px;
-          background: var(--dark-gray-3);
+          background: var(--border);
           font-size: 12px;
           color: var(--text-muted);
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
         }
         .navbar-right {
           display: flex;

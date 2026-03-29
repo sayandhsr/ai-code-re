@@ -299,19 +299,19 @@ export default function SettingsPage() {
           display: flex;
           align-items: center;
           gap: 12px;
-          background: var(--dark-gray-2);
+          background: var(--bg);
           padding: 6px 14px 6px 6px;
           border-radius: 30px;
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
           transition: all var(--transition-normal);
         }
         .theme-toggle-pill:hover {
-          border-color: var(--gold-subtle);
+          border-color: var(--gold-soft);
         }
         .pill-track {
           width: 48px;
           height: 26px;
-          background: var(--dark-gray-3);
+          background: var(--border);
           border-radius: 20px;
           position: relative;
           transition: 300ms;
@@ -339,31 +339,38 @@ export default function SettingsPage() {
         }
 
         .setting-select {
-          background: var(--dark-gray-2);
+          background: var(--bg);
           color: var(--text-primary);
-          border: 1px solid var(--glass-border);
+          border: 1px solid var(--border);
           padding: 8px 12px;
-          border-radius: var(--radius-md);
+          border-radius: var(--radius-sm);
           font-size: 14px;
           min-width: 140px;
+          transition: all var(--transition-fast);
+        }
+        
+        .setting-select:focus {
+          border-color: var(--gold);
+          box-shadow: 0 0 0 2px rgba(184,150,46,0.15);
+          outline: none;
         }
 
         .font-control {
           display: flex;
           align-items: center;
-          background: var(--dark-gray-2);
-          border: 1px solid var(--glass-border);
-          border-radius: var(--radius-md);
+          background: var(--bg);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-sm);
           overflow: hidden;
         }
         .font-control button {
           width: 36px;
           height: 36px;
           color: var(--text-primary);
-          background: var(--dark-gray-3);
+          background: var(--border);
           font-size: 18px;
         }
-        .font-control button:hover { background: var(--mid-gray); }
+        .font-control button:hover { background: var(--glass-hover); }
         .font-control span {
           padding: 0 16px;
           font-size: 14px;

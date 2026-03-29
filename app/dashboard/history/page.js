@@ -2,47 +2,39 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  History, Trash2, Calendar, Code2, BarChart3,
-  ChevronRight, AlertTriangle, Search, X,
-} from "lucide-react";
-import { getHistory, deleteAnalysis, clearHistory } from "@/lib/history";
+import { History, Calendar, Search, X, ChevronRight, Loader2 } from "lucide-react";
+import { getUserHistory } from "@/lib/history";
+import { useAuth } from "@/contexts/AuthContext";
 import ResultsTabs from "@/components/ResultsTabs";
-import toast from "react-hot-toast";
 
 export default function HistoryPage() {
+  const { user } = useAuth();
   const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setHistory(getHistory());
-  }, []);
-
-  const handleDelete = (id, e) => {
-    e.stopPropagation();
-    deleteAnalysis(id);
-    setHistory(getHistory());
-    if (selected?.id === id) setSelected(null);
-    toast.success("Deleted");
-  };
-
-  const handleClearAll = () => {
-    if (confirm("Clear all history?")) {
-      clearHistory();
-      setHistory([]);
-      setSelected(null);
-      toast.success("History cleared");
+    async function loadHistory() {
+      if (!user) return;
+      const data = await getUserHistory(user);
+      setHistory(data);
+      setLoading(false);
     }
-  };
+    if (user) {
+      loadHistory();
+    }
+  }, [user]);
 
   const filtered = history.filter((item) =>
-    item.language.toLowerCase().includes(search.toLowerCase()) ||
-    item.code.toLowerCase().includes(search.toLowerCase())
+    (item.language || "").toLowerCase().includes(search.toLowerCase()) ||
+    (item.code || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  const formatDate = (iso) => {
-    const d = new Date(iso);
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "Unknown Date";
+    // Firestore Timestamp to Date
+    const d = timestamp.toDate ? timestamp.toDate() : new Date();
     return d.toLocaleDateString("en-US", {
       month: "short", day: "numeric", year: "numeric",
       hour: "2-digit", minute: "2-digit",
@@ -64,21 +56,22 @@ export default function HistoryPage() {
             <History size={22} color="var(--gold)" />
             Analysis History
           </h1>
-          <p className="page-subtitle">{history.length} saved analyses</p>
+          <p className="page-subtitle">
+            {loading ? "Loading..." : `${history.length} saved analyses`}
+          </p>
         </div>
-        {history.length > 0 && (
-          <button className="btn btn-ghost btn-sm" onClick={handleClearAll}>
-            <Trash2 size={14} />
-            Clear All
-          </button>
-        )}
       </div>
 
-      {history.length === 0 ? (
+      {loading ? (
+        <div className="empty-state-full">
+          <Loader2 size={48} className="spin-icon" color="var(--gold)" />
+          <h3>Synchronizing with Cloud...</h3>
+        </div>
+      ) : history.length === 0 ? (
         <div className="empty-state-full">
           <History size={48} color="var(--text-muted)" />
           <h3>No history yet</h3>
-          <p>Your code analyses will appear here</p>
+          <p>Your code analyses will appear here safely in the cloud.</p>
         </div>
       ) : (
         <div className="history-layout">
@@ -111,36 +104,20 @@ export default function HistoryPage() {
                   whileHover={{ x: 4 }}
                 >
                   <div className="item-top">
-                    <span className="badge badge-gold">{item.language}</span>
+                    <span className="badge badge-gold">{item.language || "code"}</span>
                     <span
                       className="item-score"
-                      style={{ color: getScoreColor(item.score) }}
+                      style={{ color: getScoreColor(item.result?.score || 0) }}
                     >
-                      {item.score}
+                      {item.result?.score || "--"}
                     </span>
                   </div>
-                  <div className="item-code">{item.code.slice(0, 80)}...</div>
+                  <div className="item-code">{(item.code || "").slice(0, 80)}...</div>
                   <div className="item-bottom">
                     <span className="item-date">
                       <Calendar size={12} />
-                      {formatDate(item.timestamp)}
+                      {formatDate(item.createdAt)}
                     </span>
-                    <div className="item-actions">
-                      <span className="item-meta">
-                        {item.bugsCount > 0 && (
-                          <span style={{ color: "var(--red)" }}>
-                            {item.bugsCount} bugs
-                          </span>
-                        )}
-                      </span>
-                      <button
-                        className="btn-icon"
-                        onClick={(e) => handleDelete(item.id, e)}
-                        title="Delete"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -158,7 +135,13 @@ export default function HistoryPage() {
                   exit={{ opacity: 0 }}
                   style={{ height: "100%" }}
                 >
-                  <ResultsTabs results={selected.results} />
+                  {selected.result ? (
+                    <ResultsTabs results={selected.result} />
+                  ) : (
+                    <div className="detail-empty">
+                      <p>No detailed results available for this snippet.</p>
+                    </div>
+                  )}
                 </motion.div>
               ) : (
                 <div className="detail-empty">
@@ -213,6 +196,9 @@ export default function HistoryPage() {
           font-size: 14px;
           color: var(--text-muted);
         }
+        .spin-icon {
+          animation: spin 1s linear infinite;
+        }
         .history-layout {
           flex: 1;
           display: grid;
@@ -231,14 +217,17 @@ export default function HistoryPage() {
           align-items: center;
           gap: 8px;
           padding: 8px 14px;
-          background: var(--dark-gray);
-          border: 1px solid var(--glass-border);
+          background: var(--bg);
+          border: 1px solid var(--border);
           border-radius: var(--radius-md);
         }
         .search-bar input {
           flex: 1;
           font-size: 13px;
           color: var(--text-primary);
+          background: transparent;
+          border: none;
+          outline: none;
         }
         .search-bar input::placeholder {
           color: var(--text-muted);
@@ -253,17 +242,17 @@ export default function HistoryPage() {
         .history-item {
           padding: 14px 16px;
           border-radius: var(--radius-md);
-          border: 1px solid var(--glass-border);
-          background: var(--dark-gray);
+          border: 1px solid var(--border);
+          background: var(--card);
           cursor: pointer;
           transition: all var(--transition-fast);
         }
         .history-item:hover {
-          border-color: var(--mid-gray);
+          border-color: var(--gold-soft);
         }
         .history-item.active {
-          border-color: rgba(212, 175, 55, 0.4);
-          background: var(--gold-subtle);
+          border-color: var(--gold);
+          background: var(--gold-soft);
         }
         .item-top {
           display: flex;
@@ -297,14 +286,6 @@ export default function HistoryPage() {
           font-size: 11px;
           color: var(--text-muted);
         }
-        .item-actions {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .item-meta {
-          font-size: 11px;
-        }
         .history-detail {
           min-height: 0;
           overflow: hidden;
@@ -322,6 +303,9 @@ export default function HistoryPage() {
         .detail-empty p {
           font-size: 14px;
           color: var(--text-muted);
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
         @media (max-width: 900px) {
           .history-layout {
