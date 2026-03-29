@@ -76,7 +76,9 @@ export default function DashboardPage() {
 
       setResults(data);
       if (user) {
-        await saveAnalysis({ code, language, result: data }, user);
+        saveAnalysis({ code, language, result: data }, user).catch(err => {
+          console.error("Background save failed:", err);
+        });
       }
       toast.success("Analysis complete!");
     } catch (err) {
