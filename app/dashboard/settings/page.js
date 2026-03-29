@@ -205,8 +205,6 @@ export default function SettingsPage() {
           align-items: center;
           gap: 12px;
           margin-bottom: 24px;
-          border-bottom: 1px solid var(--glass-border);
-          padding-bottom: 16px;
         }
         .card-header h3 {
           font-size: 16px;

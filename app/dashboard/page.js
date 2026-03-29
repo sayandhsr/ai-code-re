@@ -286,10 +286,11 @@ export default function DashboardPage() {
 
         .editor-wrapper {
           height: 440px;
-          border-radius: var(--radius-lg);
+          border-radius: 16px;
           overflow: hidden;
           background: var(--black);
-          border: 1px solid var(--glass-border);
+          border: none;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
           transition: var(--transition-normal);
         }
         .editor-wrapper:focus-within {
@@ -332,7 +333,7 @@ export default function DashboardPage() {
         .results-section {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 24px;
         }
         .section-header {
           display: flex;

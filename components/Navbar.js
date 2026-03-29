@@ -28,7 +28,7 @@ export default function Navbar({ onToggleSidebar }) {
         </button>
         <div className="navbar-brand">
           <div className="navbar-logo">
-            <Code2 size={20} color="#0D0D0D" strokeWidth={2.5} />
+            <Code2 size={20} color={theme === "dark" ? "#1A1A1A" : "#FFFFFF"} strokeWidth={2.5} />
           </div>
           <span className="navbar-title">CodeReview AI</span>
         </div>
