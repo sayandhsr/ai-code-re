@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Search, Bell, GitBranch, Menu, X, LogOut, User, Sparkles, Code2, Sun, Moon } from "lucide-react";
+import { Search, LogOut, Sun, Moon } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -27,9 +27,6 @@ export default function Navbar({ onToggleSidebar }) {
           </svg>
         </button>
         <div className="navbar-brand">
-          <div className="navbar-logo">
-            <img src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"} alt="Logo" width="20" height="20" />
-          </div>
           <span className="navbar-title">CodeReview AI</span>
         </div>
       </div>
@@ -94,16 +91,6 @@ export default function Navbar({ onToggleSidebar }) {
           display: flex;
           align-items: center;
           gap: 12px;
-        }
-        .navbar-logo {
-          width: 38px;
-          height: 38px;
-          border-radius: 12px;
-          background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 15px var(--accent-soft);
         }
         .navbar-title {
           font-size: 18px;

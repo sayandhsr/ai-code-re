@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Code2, Sparkles, Shield, Zap, ArrowRight } from "lucide-react";
+import { Sparkles, Shield, Zap, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
@@ -64,9 +64,6 @@ export default function LoginPage() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div style={styles.logoIcon}>
-            <Code2 size={28} color="#0D0D0D" strokeWidth={2.5} />
-          </div>
           <span style={styles.logoText}>CodeReview AI</span>
         </motion.div>
 
@@ -218,16 +215,6 @@ const styles = {
     alignItems: "center",
     gap: "12px",
     marginBottom: "40px",
-  },
-  logoIcon: {
-    width: "48px",
-    height: "48px",
-    borderRadius: "14px",
-    background: "linear-gradient(135deg, #D4AF37, #FFD700)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: "0 4px 20px var(--accent-soft)",
   },
   logoText: {
     fontSize: "22px",
