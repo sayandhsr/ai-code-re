@@ -1,23 +1,14 @@
 "use client";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Sparkles, 
-  Shield, 
-  Zap, 
-  ArrowRight, 
-  Terminal, 
-  Code2, 
-  CheckCircle2,
-  Globe
-} from "lucide-react";
+import { Lock, Shield, ArrowRight, Code2, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-const GoogleIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24">
+const GoogleIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24">
     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
@@ -28,7 +19,7 @@ const GoogleIcon = ({ size = 20 }) => (
 export default function LandingPage() {
   const { user, loading, signInWithGoogle } = useAuth();
   const router = useRouter();
-  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
     if (!loading && user) {
@@ -36,47 +27,26 @@ export default function LandingPage() {
     }
   }, [user, loading, router]);
 
-  const handleSignIn = () => {
-    router.push("/login");
-  };
-
-  const featureCards = [
-    {
-      title: "Security Scan",
-      badge: "Critical",
-      message: "Potential SQL injection found in auth.js",
-      color: "rgba(239, 68, 68, 0.1)",
-      textColor: "#fca5a5",
-      borderColor: "rgba(239, 68, 68, 0.2)",
-      icon: <Shield size={14} />
-    },
-    {
-      title: "Optimization",
-      badge: "High",
-      message: "Array.map() can be optimized for O(1) lookup",
-      color: "rgba(245, 158, 11, 0.1)",
-      textColor: "#fcd34d",
-      borderColor: "rgba(245, 158, 11, 0.2)",
-      icon: <Zap size={14} />
-    },
-    {
-      title: "Review Score",
-      badge: "88/100",
-      message: "Ready for production deployment",
-      color: "rgba(16, 185, 129, 0.1)",
-      textColor: "#6ee7b7",
-      borderColor: "rgba(16, 185, 129, 0.2)",
-      icon: <CheckCircle2 size={14} />
+  const handleGoogleLogin = async () => {
+    setIsAuthenticating(true);
+    try {
+      await signInWithGoogle();
+      toast.success("Welcome to CodeReview AI");
+      router.push("/dashboard");
+    } catch (error) {
+      toast.error("Authentication failed. Please try again.");
+    } finally {
+      setIsAuthenticating(false);
     }
-  ];
+  };
 
   if (loading) {
     return (
-      <div style={s.loadingContainer}>
+      <div style={s.loadingPage}>
         <motion.div 
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          style={s.spinner}
+          style={s.loadingSpinner}
         />
       </div>
     );
@@ -85,209 +55,189 @@ export default function LandingPage() {
   if (user) return null;
 
   return (
-    <div style={{ ...s.pageWrapper, "--accent": "#f59e0b" }}>
-      <nav style={s.navbar}>
-        <div style={s.navbarContent}>
-          <div style={s.logoGroup}>
-            <div style={s.logoIcon}>
-              <Code2 size={20} />
-            </div>
+    <div style={s.pageContainer}>
+      {/* Navbar Minimal */}
+      <nav style={s.nav}>
+        <div style={s.navContent}>
+          <div style={s.logoGroup} onClick={() => router.push("/")}>
+            <div style={s.logoIcon}><Code2 size={20} /></div>
             <span style={s.logoText}>CodeReview AI</span>
           </div>
-          <button 
-            onClick={handleSignIn}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-sm font-medium transition-all"
-          >
-            <GoogleIcon size={16} />
-            <span>Sign In</span>
-          </button>
         </div>
       </nav>
 
-      <main style={s.main}>
-        <div style={s.bgPulse} />
+      <div style={s.splitLayout} className="split-layout-root">
+        {/* Left Side: Visual/Branding */}
+        <section style={s.visualSection} className="visual-section-root">
+          <div style={s.visualContent}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 style={s.headline} className="headline-root">
+                Write better code. <br />
+                Ship faster.
+              </h1>
+              <p style={s.subtext} className="subtext-root">
+                AI-powered code review that helps you catch bugs, improve quality, and move faster than ever.
+              </p>
+            </motion.div>
 
-        <div style={s.heroGrid}>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            style={s.heroTextSide}
-          >
-            <div style={s.badge}>
-              <Sparkles size={14} />
-              AI Code Analysis V2
-            </div>
+            <motion.div 
+              style={s.imageContainer}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img 
+                src="/auth_visual_coding_ai_1775841128607.png" 
+                alt="Product Visual" 
+                style={s.heroImage}
+              />
+              <div style={s.imageOverlay} />
+            </motion.div>
 
-            <h1 style={s.heroTitle}>
-              Review code <br />
-              <span style={{ color: "var(--accent)" }}>at the speed of </span> 
-              thought.
-            </h1>
-
-            <p style={s.heroSubtitle}>
-              Eliminate boilerplate reviews. Our neural engine identifies bugs, security flaws, and performance bottlenecks instantly. 
-            </p>
-
-            <div style={s.ctaGroup}>
-              <button
-                onClick={handleSignIn}
-                disabled={isSigningIn}
-                style={s.primaryBtn}
-              >
-                {isSigningIn ? (
-                  <div style={s.btnSpinner} />
-                ) : (
-                  <>
-                    <span>Start Reviewing Free</span>
-                    <ArrowRight size={20} />
-                  </>
-                )}
-              </button>
-              <div style={s.ctaSideNote}>
-                <Shield size={16} />
-                No credit card required
+            <div style={s.trustBar} className="trust-bar-root">
+              <span style={s.trustLabel}>TRUSTED BY TEAMS AT</span>
+              <div style={s.trustLogos}>
+                <span style={s.trustLogo}>VERCEL</span>
+                <span style={s.trustLogo}>GITHUB</span>
+                <span style={s.trustLogo}>STRIPE</span>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div style={s.trustedBy}>
-              <span style={s.trustedLogo}>MICROSOFT</span>
-              <span style={s.trustedLogo}>OPENAI</span>
-              <span style={s.trustedLogo}>GITHUB</span>
+        {/* Right Side: Auth Form */}
+        <section style={s.formSection} className="form-section-root">
+          <motion.div 
+            style={s.formCard}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div style={s.formHeader}>
+              <h2 style={s.formTitle}>Welcome back</h2>
+              <p style={s.formSubtitle}>Sign in to your account to continue</p>
+            </div>
+
+            <div style={s.formBody}>
+              <motion.button
+                whileHover={{ scale: 1.02, backgroundColor: "#f8fafc" }}
+                whileTap={{ scale: 0.98 }}
+                style={s.googleBtn}
+                onClick={handleGoogleLogin}
+                disabled={isAuthenticating}
+              >
+                {isAuthenticating ? (
+                  <div style={s.btnLoading} />
+                ) : (
+                  <>
+                    <GoogleIcon />
+                    <span>Continue with Google</span>
+                  </>
+                )}
+              </motion.button>
+
+              <div style={s.divider}>
+                <div style={s.dividerLine} />
+                <span style={s.dividerText}>secure login</span>
+                <div style={s.dividerLine} />
+              </div>
+
+              <div style={s.trustElements}>
+                <div style={s.trustItem}>
+                  <Shield size={14} color="#6B7280" />
+                  <span>Enterprise-grade security</span>
+                </div>
+                <div style={s.trustItem}>
+                  <Lock size={14} color="#6B7280" />
+                  <span>SOC2 & GDPR Compliant</span>
+                </div>
+              </div>
+
+              <div style={s.signupPrompt}>
+                <span style={s.navPrompt}>New here?</span>
+                <button style={s.ghostBtn} onClick={handleGoogleLogin}>Create account</button>
+              </div>
             </div>
           </motion.div>
 
-          <div style={s.heroVisualSide}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 1 }}
-              style={s.browserFrame}
-            >
-              <div style={s.browserHeader}>
-                <div style={s.browserDots}>
-                  <div style={{...s.dot, background: "#ff5f56"}} />
-                  <div style={{...s.dot, background: "#ffbd2e"}} />
-                  <div style={{...s.dot, background: "#27c93f"}} />
-                </div>
-                <div style={s.browserUrl}>
-                  <Globe size={10} />
-                  codereview.ai/analyze
-                </div>
-              </div>
-
-              <div style={s.browserContent}>
-                <img 
-                  src="/hero-analysis.png"
-                  alt="Realistic Analysis Demo"
-                  style={s.heroImage}
-                />
-                <div style={s.imageOverlay} />
-                <motion.div 
-                  animate={{ y: ["0%", "100%", "0%"] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                  style={s.scanningLine}
-                />
-              </div>
-            </motion.div>
-
-            {featureCards.map((card, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 + idx * 0.2, duration: 0.8 }}
-                style={{
-                  ...s.floatCard,
-                  background: card.color,
-                  borderColor: card.borderColor,
-                  top: `${15 + idx * 30}%`,
-                  right: idx % 2 === 0 ? "-20px" : "-40px"
-                }}
-              >
-                <div style={s.floatCardHeader}>
-                  <div style={{...s.floatCardIconTitle, color: card.textColor}}>
-                    {card.icon}
-                    <span>{card.title}</span>
-                  </div>
-                  <span style={s.floatCardBadge}>{card.badge}</span>
-                </div>
-                <p style={s.floatCardText}>{card.message}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </main>
-
-      <section style={s.socialProof}>
-        <div style={s.socialProofContent}>
-          <div style={s.avatarStack}>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} style={s.avatar}>
-                <img src={`https://i.pravatar.cc/150?u=${i}`} alt="user" style={s.avatarImg} />
-              </div>
-            ))}
-            <div style={s.avatarCounter}>10k+</div>
-          </div>
-          <div style={s.socialProofText}>
-            <h4 style={s.socialProofTitle}>Loved by developers worldwide</h4>
-            <p style={s.socialProofSub}>Join the community of developers who value quality and security.</p>
-          </div>
-          <div style={s.socialLogos}>
-            <span style={s.socLogo}>SOC2</span>
-            <span style={s.socLogo}>SECURE</span>
-            <span style={s.socLogo}>GDPR</span>
-          </div>
-        </div>
-      </section>
-
-      <footer style={s.footer}>
-        © 2026 CodeReview AI – Privacy – Terms – Security
-      </footer>
+          <footer style={s.footer}>
+            <p>© 2026 CodeReview AI. Built for developers.</p>
+          </footer>
+        </section>
+      </div>
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width: 1024px) {
+          .split-layout-root { 
+            flex-direction: column !important; 
+          }
+          .visual-section-root { 
+            border-right: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            padding: 40px 24px !important;
+            min-height: auto !important;
+          }
+          .form-section-root {
+            padding: 40px 24px !important;
+            min-height: auto !important;
+          }
+          .headline-root {
+            font-size: 36px !important;
+            text-align: center !important;
+          }
+          .subtext-root {
+            text-align: center !important;
+            margin: 0 auto 32px auto !important;
+          }
+          .trust-bar-root {
+            margin-top: 40px !important;
+            align-items: center !important;
+          }
+        }
       `}</style>
     </div>
   );
 }
 
 const s = {
-  pageWrapper: {
+  pageContainer: {
     minHeight: "100vh",
-    backgroundColor: "#0B0F14",
-    color: "#E5E7EB",
+    background: "#F9FAFB",
+    color: "#111827",
     fontFamily: "'Inter', sans-serif",
-    overflowX: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
-  loadingContainer: {
+  loadingPage: {
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "#0B0F14",
+    background: "#F9FAFB",
   },
-  spinner: {
-    width: "32px",
-    height: "32px",
-    border: "2px solid rgba(184, 150, 46, 0.2)",
-    borderTopColor: "var(--accent)",
+  loadingSpinner: {
+    width: "24px",
+    height: "24px",
+    border: "2px solid rgba(37, 99, 235, 0.1)",
+    borderTopColor: "#2563EB",
     borderRadius: "50%",
   },
-  navbar: {
-    position: "fixed",
+  nav: {
+    padding: "24px 40px",
+    position: "absolute",
     top: 0,
     width: "100%",
-    zIndex: 100,
-    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-    background: "rgba(11, 15, 20, 0.8)",
-    backdropFilter: "blur(12px)",
+    zIndex: 10,
   },
-  navbarContent: {
-    maxWidth: "1200px",
+  navContent: {
+    maxWidth: "1400px",
     margin: "0 auto",
-    padding: "16px 24px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -295,324 +245,228 @@ const s = {
   logoGroup: {
     display: "flex",
     alignItems: "center",
-    gap: "12px",
+    gap: "10px",
+    cursor: "pointer",
   },
   logoIcon: {
-    width: "36px",
-    height: "36px",
-    background: "var(--accent)",
+    width: "32px",
+    height: "32px",
+    background: "#2563EB",
+    borderRadius: "8px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "10px",
-    color: "#0B0F14",
+    color: "#FFF",
   },
   logoText: {
     fontSize: "18px",
     fontWeight: "700",
-    color: "#FFFFFF",
+    letterSpacing: "-0.5px",
   },
-  navBtn: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    padding: "8px 16px",
-    background: "rgba(255, 255, 255, 0.05)",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    borderRadius: "8px",
-    color: "#FFFFFF",
-    fontSize: "14px",
-    fontWeight: "500",
-    cursor: "pointer",
-  },
-  main: {
-    position: "relative",
-    paddingTop: "120px",
-    paddingBottom: "80px",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    paddingLeft: "24px",
-    paddingRight: "24px",
-  },
-  bgPulse: {
-    position: "absolute",
-    top: "-100px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "800px",
-    height: "600px",
-    background: "rgba(184, 150, 46, 0.05)",
-    filter: "blur(120px)",
-    borderRadius: "100%",
-    zIndex: -1,
-  },
-  heroGrid: {
-    display: "grid",
-    gridTemplateColumns: "1.1fr 0.9fr",
-    gap: "60px",
-    alignItems: "center",
-  },
-  heroTextSide: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "24px",
-  },
-  badge: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "8px",
-    padding: "6px 14px",
-    background: "rgba(184, 150, 46, 0.1)",
-    border: "1px solid rgba(184, 150, 46, 0.2)",
-    borderRadius: "100px",
-    color: "var(--accent)",
-    fontSize: "12px",
-    fontWeight: "600",
-    width: "fit-content",
-    textTransform: "uppercase",
-    letterSpacing: "1px",
-  },
-  heroTitle: {
-    fontSize: "64px",
-    fontWeight: "800",
-    lineHeight: "1.1",
-    color: "#FFFFFF",
-    letterSpacing: "-1.5px",
-  },
-  heroSubtitle: {
-    fontSize: "20px",
-    color: "#9CA3AF",
-    lineHeight: "1.6",
-    maxWidth: "540px",
-  },
-  ctaGroup: {
-    display: "flex",
-    alignItems: "center",
-    gap: "20px",
-    marginTop: "20px",
-  },
-  primaryBtn: {
-    background: "var(--accent)",
-    color: "#0B0F14",
-    padding: "16px 32px",
-    borderRadius: "12px",
-    fontSize: "18px",
-    fontWeight: "700",
-    border: "none",
+  navRight: {
     display: "flex",
     alignItems: "center",
     gap: "12px",
-    cursor: "pointer",
-    boxShadow: "0 10px 20px rgba(184, 150, 46, 0.2)",
   },
-  ctaSideNote: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
+  navPrompt: {
     fontSize: "14px",
     color: "#6B7280",
-    fontWeight: "500",
   },
-  btnSpinner: {
-    width: "24px",
-    height: "24px",
-    border: "2px solid rgba(11, 15, 20, 0.2)",
-    borderTopColor: "#0B0F14",
-    borderRadius: "50%",
-    animation: "spin 0.6s linear infinite",
-  },
-  trustedBy: {
-    display: "flex",
-    gap: "32px",
-    marginTop: "40px",
-    opacity: 0.3,
-  },
-  trustedLogo: {
-    fontSize: "20px",
-    fontWeight: "900",
-    fontStyle: "italic",
-    letterSpacing: "-1px",
-  },
-  heroVisualSide: {
-    position: "relative",
-  },
-  browserFrame: {
-    background: "#161B22",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    borderRadius: "20px",
-    overflow: "hidden",
-    boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
-  },
-  browserHeader: {
-    padding: "12px 20px",
-    background: "rgba(255, 255, 255, 0.03)",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-    display: "flex",
-    alignItems: "center",
-    gap: "16px",
-  },
-  browserDots: {
-    display: "flex",
-    gap: "8px",
-  },
-  dot: {
-    width: "10px",
-    height: "10px",
-    borderRadius: "50%",
-  },
-  browserUrl: {
-    flex: 1,
-    background: "rgba(255, 255, 255, 0.05)",
+  ghostBtn: {
+    fontSize: "14px",
+    fontWeight: "600",
+    color: "#2563EB",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: "8px 12px",
     borderRadius: "6px",
-    padding: "4px 12px",
-    fontSize: "10px",
-    color: "#6B7280",
+    transition: "background 0.2s",
+  },
+  splitLayout: {
+    display: "flex",
+    flex: 1,
+    minHeight: "100vh",
+  },
+  visualSection: {
+    flex: 1,
+    background: "linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)",
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    maxWidth: "200px",
-    margin: "0 auto",
-  },
-  browserContent: {
+    justifyContent: "center",
+    padding: "80px",
+    borderRight: "1px solid #E5E7EB",
     position: "relative",
-    aspectRatio: "4/3",
-    background: "#000",
+    overflow: "hidden",
+  },
+  visualContent: {
+    maxWidth: "540px",
+    position: "relative",
+    zIndex: 2,
+  },
+  headline: {
+    fontSize: "56px",
+    fontWeight: "700",
+    lineHeight: "1.1",
+    letterSpacing: "-2px",
+    marginBottom: "20px",
+    color: "#111827",
+  },
+  subtext: {
+    fontSize: "18px",
+    color: "#6B7280",
+    lineHeight: "1.6",
+    marginBottom: "60px",
+    maxWidth: "420px",
+  },
+  imageContainer: {
+    borderRadius: "24px",
+    background: "#FFF",
+    padding: "16px",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.04)",
+    border: "1px solid #E5E7EB",
+    position: "relative",
   },
   heroImage: {
     width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    opacity: 0.8,
+    borderRadius: "16px",
+    display: "block",
   },
   imageOverlay: {
     position: "absolute",
     inset: 0,
-    background: "linear-gradient(to top, #161B22, transparent)",
-    opacity: 0.6,
+    background: "linear-gradient(to top, rgba(255,255,255,0.1), transparent)",
+    borderRadius: "16px",
   },
-  scanningLine: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "2px",
-    background: "rgba(184, 150, 46, 0.4)",
-    boxShadow: "0 0 10px rgba(184, 150, 46, 0.4)",
-  },
-  floatCard: {
-    position: "absolute",
-    padding: "16px",
-    borderRadius: "14px",
-    border: "1px solid",
-    width: "240px",
-    zIndex: 10,
-    boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-    backdropFilter: "blur(12px)",
-  },
-  floatCardHeader: {
+  trustBar: {
+    marginTop: "80px",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "10px",
+    flexDirection: "column",
+    gap: "16px",
   },
-  floatCardIconTitle: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
+  trustLabel: {
     fontSize: "11px",
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: "0.5px",
+    fontWeight: "800",
+    color: "#94A3B8",
+    letterSpacing: "1px",
   },
-  floatCardBadge: {
-    fontSize: "9px",
+  trustLogos: {
+    display: "flex",
+    gap: "32px",
+    opacity: 0.4,
+  },
+  trustLogo: {
+    fontSize: "14px",
     fontWeight: "900",
-    padding: "2px 6px",
-    background: "rgba(255, 255, 255, 0.1)",
-    borderRadius: "4px",
-    color: "#FFF",
+    letterSpacing: "-0.5px",
   },
-  floatCardText: {
-    fontSize: "12px",
-    color: "rgba(255, 255, 255, 0.8)",
-    lineHeight: "1.4",
-  },
-  socialProof: {
-    borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-    padding: "60px 24px",
-  },
-  socialProofContent: {
-    maxWidth: "1200px",
-    margin: "0 auto",
+  formSection: {
+    flex: 1,
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "40px",
-    flexWrap: "wrap",
-  },
-  avatarStack: {
-    display: "flex",
-    alignItems: "center",
-  },
-  avatar: {
-    width: "48px",
-    height: "48px",
-    borderRadius: "50%",
-    border: "3px solid #0B0F14",
-    background: "#161B22",
-    marginLeft: "-12px",
-    overflow: "hidden",
-  },
-  avatarImg: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
-  avatarCounter: {
-    width: "48px",
-    height: "48px",
-    borderRadius: "50%",
-    border: "3px solid #0B0F14",
-    background: "var(--accent)",
-    marginLeft: "-12px",
-    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "12px",
-    fontWeight: "800",
-    color: "#0B0F14",
+    padding: "40px",
+    background: "#FFFFFF",
   },
-  socialProofText: {
-    flex: 1,
-    minWidth: "200px",
+  formCard: {
+    width: "100%",
+    maxWidth: "420px",
+    padding: "40px",
+    background: "#FFF",
+    borderRadius: "20px",
+    border: "1px solid #E5E7EB",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.02)",
   },
-  socialProofTitle: {
-    fontSize: "18px",
+  formHeader: {
+    textAlign: "center",
+    marginBottom: "32px",
+  },
+  formTitle: {
+    fontSize: "24px",
     fontWeight: "700",
-    color: "#FFF",
-    marginBottom: "4px",
+    color: "#111827",
+    marginBottom: "8px",
   },
-  socialProofSub: {
+  formSubtitle: {
     fontSize: "14px",
     color: "#6B7280",
   },
-  socialLogos: {
+  formBody: {
     display: "flex",
-    gap: "30px",
-    opacity: 0.2,
-    color: "#FFF",
-    fontWeight: "800",
-    letterSpacing: "4px",
+    flexDirection: "column",
+    gap: "24px",
   },
-  socLogo: {
-    fontSize: "20px",
+  googleBtn: {
+    width: "100%",
+    height: "52px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "12px",
+    background: "#FFFFFF",
+    border: "1px solid #E5E7EB",
+    borderRadius: "12px",
+    fontSize: "15px",
+    fontWeight: "600",
+    color: "#1F2937",
+    cursor: "pointer",
+    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+  },
+  divider: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    margin: "12px 0",
+  },
+  dividerLine: {
+    flex: 1,
+    height: "1px",
+    background: "#F1F5F9",
+  },
+  dividerText: {
+    fontSize: "11px",
+    fontWeight: "700",
+    color: "#CBD5E1",
+    textTransform: "uppercase",
+    letterSpacing: "1.5px",
+  },
+  trustElements: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+    marginTop: "8px",
+  },
+  trustItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    fontSize: "13px",
+    color: "#6B7280",
+  },
+  btnLoading: {
+    width: "20px",
+    height: "20px",
+    border: "2px solid #E5E7EB",
+    borderTopColor: "#2563EB",
+    borderRadius: "50%",
+    animation: "spin 0.6s linear infinite",
+  },
+  signupPrompt: {
+    marginTop: "16px",
+    paddingTop: "24px",
+    borderTop: "1px solid #F1F5F9",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
   },
   footer: {
-    textAlign: "center",
-    padding: "40px 24px",
+    marginTop: "auto",
+    padding: "20px",
     fontSize: "13px",
-    color: "rgba(107, 114, 128, 0.5)",
-    fontWeight: "500",
-  }
+    color: "#94A3B8",
+    textAlign: "center",
+  },
 };
