@@ -1,16 +1,25 @@
 "use client";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Sparkles, Shield, Zap, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { Lock, Shield, ArrowRight, Code2, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
+
+const GoogleIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+  </svg>
+);
 
 export default function LoginPage() {
   const { user, loading, signInWithGoogle } = useAuth();
   const router = useRouter();
-  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
     if (!loading && user) {
@@ -18,23 +27,27 @@ export default function LoginPage() {
     }
   }, [user, loading, router]);
 
-  const handleSignIn = async () => {
-    setIsSigningIn(true);
+  const handleGoogleLogin = async () => {
+    setIsAuthenticating(true);
     try {
       await signInWithGoogle();
-      toast.success("Welcome! Redirecting...");
+      toast.success("Welcome to CodeReview AI");
       router.push("/dashboard");
     } catch (error) {
-      toast.error("Sign in failed. Please try again.");
+      toast.error("Authentication failed. Please try again.");
     } finally {
-      setIsSigningIn(false);
+      setIsAuthenticating(false);
     }
   };
 
   if (loading) {
     return (
-      <div style={styles.loadingScreen}>
-        <div style={styles.spinner} />
+      <div style={s.loadingPage}>
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          style={s.loadingSpinner}
+        />
       </div>
     );
   }
@@ -42,296 +55,409 @@ export default function LoginPage() {
   if (user) return null;
 
   return (
-    <div style={styles.container}>
-      {/* Animated Background */}
-      <div style={styles.bgGradient} />
-      <div style={styles.bgOrb1} />
-      <div style={styles.bgOrb2} />
-      <div style={styles.bgOrb3} />
-      <div style={styles.gridOverlay} />
+    <div style={s.pageContainer}>
+      {/* Navbar Minimal */}
+      <nav style={s.nav}>
+        <div style={s.navContent}>
+          <div style={s.logoGroup} onClick={() => router.push("/")}>
+            <div style={s.logoIcon}><Code2 size={20} /></div>
+            <span style={s.logoText}>CodeReview AI</span>
+          </div>
+          <div style={s.navRight}>
+            <span style={s.navPrompt}>New here?</span>
+            <button style={s.ghostBtn} onClick={handleGoogleLogin}>Create account</button>
+          </div>
+        </div>
+      </nav>
 
-      {/* Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        style={styles.content}
-      >
-        {/* Logo */}
-        <motion.div
-          style={styles.logoContainer}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <span style={styles.logoText}>CodeReview AI</span>
-        </motion.div>
+      <div style={s.splitLayout} className="split-layout-root">
+        {/* Left Side: Visual/Branding */}
+        <section style={s.visualSection} className="visual-section-root">
+          <div style={s.visualContent}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 style={s.headline} className="headline-root">
+                Write better code. <br />
+                Ship faster.
+              </h1>
+              <p style={s.subtext} className="subtext-root">
+                AI-powered code review that helps you catch bugs, improve quality, and move faster than ever.
+              </p>
+            </motion.div>
 
-        {/* Card */}
-        <motion.div
-          style={styles.card}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.7 }}
-        >
-          <div style={styles.cardGlow} />
+            <motion.div 
+              style={s.imageContainer}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img 
+                src="/auth_visual_coding_ai_1775841128607.png" 
+                alt="Product Visual" 
+                style={s.heroImage}
+              />
+              <div style={s.imageOverlay} />
+            </motion.div>
 
-          <h1 style={styles.title}>
-            Write Better Code.
-            <br />
-            <span style={styles.titleGold}>Instantly.</span>
-          </h1>
-
-          <p style={styles.subtitle}>
-            AI-powered code analysis that catches bugs, suggests improvements,
-            and generates documentation — in seconds.
-          </p>
-
-          {/* Features */}
-          <div style={styles.features}>
-            <div style={styles.featureItem}>
-              <Sparkles size={16} color="#D4AF37" />
-              <span>AI Analysis</span>
-            </div>
-            <div style={styles.featureDot} />
-            <div style={styles.featureItem}>
-              <Shield size={16} color="#D4AF37" />
-              <span>Security Scan</span>
-            </div>
-            <div style={styles.featureDot} />
-            <div style={styles.featureItem}>
-              <Zap size={16} color="#D4AF37" />
-              <span>Instant Results</span>
+            <div style={s.trustBar} className="trust-bar-root">
+              <span style={s.trustLabel}>TRUSTED BY TEAMS AT</span>
+              <div style={s.trustLogos}>
+                <span style={s.trustLogo}>VERCEL</span>
+                <span style={s.trustLogo}>GITHUB</span>
+                <span style={s.trustLogo}>STRIPE</span>
+              </div>
             </div>
           </div>
+        </section>
 
-          {/* Sign In Button */}
-          <motion.button
-            onClick={handleSignIn}
-            disabled={isSigningIn}
-            style={styles.signInBtn}
-            whileHover={{ scale: 1.02, boxShadow: "0 8px 30px var(--accent-soft)" }}
-            whileTap={{ scale: 0.98 }}
+        {/* Right Side: Auth Form */}
+        <section style={s.formSection} className="form-section-root">
+          <motion.div 
+            style={s.formCard}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            {isSigningIn ? (
-              <div style={styles.btnSpinner} />
-            ) : (
-              <>
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-                </svg>
-                <span>Continue with Google</span>
-                <ArrowRight size={18} />
-              </>
-            )}
-          </motion.button>
+            <div style={s.formHeader}>
+              <h2 style={s.formTitle}>Welcome back</h2>
+              <p style={s.formSubtitle}>Sign in to your account to continue</p>
+            </div>
 
-          <p style={styles.terms}>
-            By signing in, you agree to our Terms of Service
-          </p>
-        </motion.div>
+            <div style={s.formBody}>
+              <motion.button
+                whileHover={{ scale: 1.02, backgroundColor: "#f8fafc" }}
+                whileTap={{ scale: 0.98 }}
+                style={s.googleBtn}
+                onClick={handleGoogleLogin}
+                disabled={isAuthenticating}
+              >
+                {isAuthenticating ? (
+                  <div style={s.btnLoading} />
+                ) : (
+                  <>
+                    <GoogleIcon />
+                    <span>Continue with Google</span>
+                  </>
+                )}
+              </motion.button>
 
-        {/* Footer */}
-        <motion.p
-          style={styles.footer}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          Trusted by developers worldwide
-        </motion.p>
-      </motion.div>
+              <div style={s.divider}>
+                <div style={s.dividerLine} />
+                <span style={s.dividerText}>secure login</span>
+                <div style={s.dividerLine} />
+              </div>
+
+              <div style={s.trustElements}>
+                <div style={s.trustItem}>
+                  <Shield size={14} color="#6B7280" />
+                  <span>Enterprise-grade security</span>
+                </div>
+                <div style={s.trustItem}>
+                  <Lock size={14} color="#6B7280" />
+                  <span>SOC2 & GDPR Compliant</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <footer style={s.footer}>
+            <p>© 2026 CodeReview AI. Built for developers.</p>
+          </footer>
+        </section>
+      </div>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width: 1024px) {
+          .split-layout-root { 
+            flex-direction: column !important; 
+          }
+          .visual-section-root { 
+            border-right: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            padding: 40px 24px !important;
+            min-height: auto !important;
+          }
+          .form-section-root {
+            padding: 40px 24px !important;
+            min-height: auto !important;
+          }
+          .headline-root {
+            font-size: 36px !important;
+            text-align: center !important;
+          }
+          .subtext-root {
+            text-align: center !important;
+            margin: 0 auto 32px auto !important;
+          }
+          .trust-bar-root {
+            margin-top: 40px !important;
+            align-items: center !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
 
-const styles = {
-  container: {
+const s = {
+  pageContainer: {
+    minHeight: "100vh",
+    background: "#F9FAFB",
+    color: "#111827",
+    fontFamily: "'Inter', sans-serif",
+    display: "flex",
+    flexDirection: "column",
+  },
+  loadingPage: {
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    background: "#F9FAFB",
+  },
+  loadingSpinner: {
+    width: "24px",
+    height: "24px",
+    border: "2px solid rgba(37, 99, 235, 0.1)",
+    borderTopColor: "#2563EB",
+    borderRadius: "50%",
+  },
+  nav: {
+    padding: "24px 40px",
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    zIndex: 10,
+  },
+  navContent: {
+    maxWidth: "1400px",
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  logoGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    cursor: "pointer",
+  },
+  logoIcon: {
+    width: "32px",
+    height: "32px",
+    background: "#2563EB",
+    borderRadius: "8px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#FFF",
+  },
+  logoText: {
+    fontSize: "18px",
+    fontWeight: "700",
+    letterSpacing: "-0.5px",
+  },
+  navRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+  },
+  navPrompt: {
+    fontSize: "14px",
+    color: "#6B7280",
+  },
+  ghostBtn: {
+    fontSize: "14px",
+    fontWeight: "600",
+    color: "#2563EB",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: "8px 12px",
+    borderRadius: "6px",
+    transition: "background 0.2s",
+  },
+  splitLayout: {
+    display: "flex",
+    flex: 1,
+    minHeight: "100vh",
+  },
+  visualSection: {
+    flex: 1,
+    background: "linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "80px",
+    borderRight: "1px solid #E5E7EB",
     position: "relative",
     overflow: "hidden",
-    background: "#0D0D0D",
   },
-  bgGradient: {
-    position: "absolute",
-    inset: 0,
-    background: "radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%)",
-  },
-  bgOrb1: {
-    position: "absolute",
-    width: "600px",
-    height: "600px",
-    borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(212, 175, 55, 0.06) 0%, transparent 70%)",
-    top: "-200px",
-    right: "-100px",
-    animation: "pulse 6s ease-in-out infinite",
-  },
-  bgOrb2: {
-    position: "absolute",
-    width: "400px",
-    height: "400px",
-    borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%)",
-    bottom: "-100px",
-    left: "-100px",
-    animation: "pulse 8s ease-in-out infinite",
-  },
-  bgOrb3: {
-    position: "absolute",
-    width: "300px",
-    height: "300px",
-    borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(255, 215, 0, 0.03) 0%, transparent 70%)",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    animation: "pulse 10s ease-in-out infinite",
-  },
-  gridOverlay: {
-    position: "absolute",
-    inset: 0,
-    backgroundImage: `radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px)`,
-    backgroundSize: "40px 40px",
-  },
-  content: {
+  visualContent: {
+    maxWidth: "540px",
     position: "relative",
-    zIndex: 10,
+    zIndex: 2,
+  },
+  headline: {
+    fontSize: "56px",
+    fontWeight: "700",
+    lineHeight: "1.1",
+    letterSpacing: "-2px",
+    marginBottom: "20px",
+    color: "#111827",
+  },
+  subtext: {
+    fontSize: "18px",
+    color: "#6B7280",
+    lineHeight: "1.6",
+    marginBottom: "60px",
+    maxWidth: "420px",
+  },
+  imageContainer: {
+    borderRadius: "24px",
+    background: "#FFF",
+    padding: "16px",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.04)",
+    border: "1px solid #E5E7EB",
+    position: "relative",
+  },
+  heroImage: {
+    width: "100%",
+    borderRadius: "16px",
+    display: "block",
+  },
+  imageOverlay: {
+    position: "absolute",
+    inset: 0,
+    background: "linear-gradient(to top, rgba(255,255,255,0.1), transparent)",
+    borderRadius: "16px",
+  },
+  trustBar: {
+    marginTop: "80px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+  },
+  trustLabel: {
+    fontSize: "11px",
+    fontWeight: "800",
+    color: "#94A3B8",
+    letterSpacing: "1px",
+  },
+  trustLogos: {
+    display: "flex",
+    gap: "32px",
+    opacity: 0.4,
+  },
+  trustLogo: {
+    fontSize: "14px",
+    fontWeight: "900",
+    letterSpacing: "-0.5px",
+  },
+  formSection: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "20px",
+    justifyContent: "center",
+    padding: "40px",
+    background: "#FFFFFF",
+  },
+  formCard: {
     width: "100%",
-    maxWidth: "460px",
+    maxWidth: "420px",
+    padding: "40px",
+    background: "#FFF",
+    borderRadius: "20px",
+    border: "1px solid #E5E7EB",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.02)",
   },
-  logoContainer: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    marginBottom: "40px",
-  },
-  logoText: {
-    fontSize: "22px",
-    fontWeight: "700",
-    color: "#F5F5F5",
-    letterSpacing: "-0.5px",
-  },
-  card: {
-    position: "relative",
-    width: "100%",
-    padding: "40px 36px",
-    background: "rgba(26, 26, 26, 0.6)",
-    backdropFilter: "blur(24px)",
-    WebkitBackdropFilter: "blur(24px)",
-    border: "1px solid rgba(212, 175, 55, 0.15)",
-    borderRadius: "24px",
+  formHeader: {
     textAlign: "center",
+    marginBottom: "32px",
   },
-  cardGlow: {
-    position: "absolute",
-    top: "-1px",
-    left: "20%",
-    right: "20%",
-    height: "1px",
-    background: "linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent)",
+  formTitle: {
+    fontSize: "24px",
+    fontWeight: "700",
+    color: "#111827",
+    marginBottom: "8px",
   },
-  title: {
-    fontSize: "32px",
-    fontWeight: "800",
-    lineHeight: "1.2",
-    color: "#F5F5F5",
-    marginBottom: "16px",
-    letterSpacing: "-1px",
+  formSubtitle: {
+    fontSize: "14px",
+    color: "#6B7280",
   },
-  titleGold: {
-    background: "linear-gradient(135deg, #D4AF37, #FFD700)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text",
+  formBody: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "24px",
   },
-  subtitle: {
-    fontSize: "15px",
-    color: "#A0A0A0",
-    lineHeight: "1.6",
-    marginBottom: "28px",
-    maxWidth: "360px",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  features: {
+  googleBtn: {
+    width: "100%",
+    height: "52px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "12px",
-    marginBottom: "32px",
-    flexWrap: "wrap",
-  },
-  featureItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-    fontSize: "13px",
-    color: "#A0A0A0",
-  },
-  featureDot: {
-    width: "3px",
-    height: "3px",
-    borderRadius: "50%",
-    background: "#3A3A3A",
-  },
-  signInBtn: {
-    width: "100%",
-    padding: "14px 24px",
-    borderRadius: "14px",
-    background: "linear-gradient(135deg, #D4AF37, var(--accent))",
-    color: "#0D0D0D",
+    background: "#FFFFFF",
+    border: "1px solid #E5E7EB",
+    borderRadius: "12px",
     fontSize: "15px",
     fontWeight: "600",
+    color: "#1F2937",
+    cursor: "pointer",
+    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+  },
+  divider: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    gap: "10px",
-    border: "none",
-    cursor: "pointer",
-    transition: "all 250ms ease",
+    gap: "12px",
+    margin: "12px 0",
   },
-  btnSpinner: {
+  dividerLine: {
+    flex: 1,
+    height: "1px",
+    background: "#F1F5F9",
+  },
+  dividerText: {
+    fontSize: "11px",
+    fontWeight: "700",
+    color: "#CBD5E1",
+    textTransform: "uppercase",
+    letterSpacing: "1.5px",
+  },
+  trustElements: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+    marginTop: "8px",
+  },
+  trustItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    fontSize: "13px",
+    color: "#6B7280",
+  },
+  btnLoading: {
     width: "20px",
     height: "20px",
-    border: "2px solid rgba(13, 13, 13, 0.3)",
-    borderTopColor: "#0D0D0D",
+    border: "2px solid #E5E7EB",
+    borderTopColor: "#2563EB",
     borderRadius: "50%",
     animation: "spin 0.6s linear infinite",
   },
-  terms: {
-    fontSize: "12px",
-    color: "#666666",
-    marginTop: "16px",
-  },
   footer: {
+    marginTop: "auto",
+    padding: "20px",
     fontSize: "13px",
-    color: "#666666",
-    marginTop: "32px",
+    color: "#94A3B8",
+    textAlign: "center",
   },
-  loadingScreen: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "#0D0D0D",
-  },
-  spinner: {
-    width: "32px",
-    height: "32px",
-    border: "3px solid #1A1A1A",
-    borderTopColor: "#D4AF37",
-    borderRadius: "50%",
-    animation: "spin 0.8s linear infinite",
-  },
+  /* Media Queries for Responsive Stacking (implemented via inline logic if needed) */
 };
