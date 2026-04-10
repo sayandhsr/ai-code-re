@@ -63,10 +63,6 @@ export default function LoginPage() {
             <div style={s.logoIcon}><Code2 size={20} /></div>
             <span style={s.logoText}>CodeReview AI</span>
           </div>
-          <div style={s.navRight}>
-            <span style={s.navPrompt}>New here?</span>
-            <button style={s.ghostBtn} onClick={handleGoogleLogin}>Create account</button>
-          </div>
         </div>
       </nav>
 
@@ -158,6 +154,11 @@ export default function LoginPage() {
                   <Lock size={14} color="#6B7280" />
                   <span>SOC2 & GDPR Compliant</span>
                 </div>
+              </div>
+
+              <div style={s.signupPrompt}>
+                <span style={s.navPrompt}>New here?</span>
+                <button style={s.ghostBtn} onClick={handleGoogleLogin}>Create account</button>
               </div>
             </div>
           </motion.div>
@@ -451,6 +452,15 @@ const s = {
     borderTopColor: "#2563EB",
     borderRadius: "50%",
     animation: "spin 0.6s linear infinite",
+  },
+  signupPrompt: {
+    marginTop: "16px",
+    paddingTop: "24px",
+    borderTop: "1px solid #F1F5F9",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
   },
   footer: {
     marginTop: "auto",
